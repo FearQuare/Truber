@@ -13,7 +13,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Truber',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.white70),
         useMaterial3: true,
       ),
       home: const MyHomePage(title: 'Truber Home Page'),
@@ -31,19 +31,18 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int currentPageIndex = 0;
-  // Function to navigate to the ProfilePage
-  void _navigateToProfilePage() {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => ProfilePage()), //Navigate to ProfilePage
-    );
-  }
+  int _selectedIndex = 0;
 
-  void _onTabSelected(int index){
-    if (index != currentPageIndex){
-      Navigator.pop(context);
+  void _onItemTapped(int index) {
+    if(index == 1){
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => ProfilePage()),
+      );
     }
+    setState(() {
+      _selectedIndex = index;
+    });
   }
 
   @override
@@ -52,24 +51,10 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: Text(widget.title),
-        actions: [
-          IconButton(
-              onPressed: () {
-                // I'll provide the action here later.
-              },
-              icon: Icon(Icons.menu)),
-        ],
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            ElevatedButton(onPressed: _navigateToProfilePage, child: Text("Go to Profile Page")),
-          ],
-        ),
       ),
       bottomNavigationBar: TruberNavBar(
-        onTabSelected: _onTabSelected,
+        selectedIndex: _selectedIndex,
+        onTabSelected: _onItemTapped,
       ),
     );
   }

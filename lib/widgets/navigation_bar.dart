@@ -1,27 +1,21 @@
 import 'package:flutter/material.dart';
 
 class TruberNavBar extends StatefulWidget {
+  final int selectedIndex;
   final Function(int) onTabSelected;
-  const TruberNavBar({super.key, required this.onTabSelected});
+  const TruberNavBar({super.key, required this.selectedIndex, required this.onTabSelected});
   @override
   State<StatefulWidget> createState() => _TruberNavBarState();
 }
 
 class _TruberNavBarState extends State<TruberNavBar> {
-  int currentPageIndex = 0;
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
     return NavigationBar(
-      onDestinationSelected: (int index) {
-        setState(() {
-          currentPageIndex = index;
-        });
-        widget.onTabSelected(index);
-      },
+      selectedIndex: widget.selectedIndex,
+      onDestinationSelected: widget.onTabSelected,
       indicatorColor: Colors.amber,
-      selectedIndex: currentPageIndex,
       destinations: const <Widget>[
         NavigationDestination(
           selectedIcon: Icon(Icons.home),
@@ -29,17 +23,11 @@ class _TruberNavBarState extends State<TruberNavBar> {
           label: 'Home',
         ),
         NavigationDestination(
-          icon: Badge(child: Icon(Icons.notifications_sharp)),
-          label: 'notifications',
-        ),
-        NavigationDestination(
-          icon: Badge(
-            child: Icon(Icons.person),
-          ),
+          selectedIcon: Icon(Icons.person),
+          icon: Icon(Icons.person_outlined),
           label: 'Profile',
         ),
       ],
     );
   }
-
 }
