@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:truber/screens/profile_page.dart';
 import 'package:truber/widgets/navigation_bar.dart';
+import 'package:truber/screens/login_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -16,7 +17,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const MyHomePage(title: 'Truber Home Page'),
+      home: LoginScreen(),
     );
   }
 }
