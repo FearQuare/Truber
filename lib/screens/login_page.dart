@@ -33,11 +33,14 @@ class _LoginScreenState extends State<LoginScreen> {
           final userProvider =
               Provider.of<UserProvider>(context, listen: false);
           userProvider.setUserDetails(
-              data['name'] as String,
-              password,
-              data['profile_picture'] as String,
-              data['surname'] as String,
-              username);
+            data['name'] as String,
+            password,
+            data['profile_picture'] as String,
+            data['surname'] as String,
+            username,
+            data['about'] as String,
+            data['cover_image'] as String,
+          );
 
           Navigator.of(context).pushReplacement(
             MaterialPageRoute(

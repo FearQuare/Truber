@@ -32,7 +32,7 @@ class _ProfilePageState extends State<ProfilePage> {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
-          title: const Text('Profile Page'),
+          title: const Text('My Profile'),
         ),
         body: ListView(
           padding: EdgeInsets.zero,
@@ -52,11 +52,21 @@ class _ProfilePageState extends State<ProfilePage> {
   Widget buildContent(UserProvider userProvider) {
     String? name = userProvider.name;
     String? surname = userProvider.surname;
-    String fullName = "${name} ${surname}";
+    String fullName = "${name ?? ''} ${surname ?? ''}";
+    String? aboutText = userProvider.about;
+
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
-        Text(fullName),
+        Text(
+          fullName,
+          style: const TextStyle(
+            fontSize: 20.0,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        const SizedBox(height: 10),
+        About(aboutText: aboutText),
       ],
     );
   }
@@ -70,7 +80,7 @@ class _ProfilePageState extends State<ProfilePage> {
       children: [
         Container(
           margin: EdgeInsets.only(bottom: bottom),
-          child: buildCoverImage(),
+          child: buildCoverImage(userProvider),
         ),
         Positioned(
           top: top,
@@ -80,10 +90,11 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
-  Widget buildCoverImage() => Container(
+  Widget buildCoverImage(UserProvider userProvider) => Container(
       color: Colors.grey,
       child: Image.network(
-        'https://cdn.pixabay.com/photo/2023/12/06/08/56/winter-8433264_1280.jpg',
+        userProvider.cover_image ??
+            'https://cdn.pixabay.com/photo/2023/12/06/08/56/winter-8433264_1280.jpg',
         width: double.infinity,
         height: coverHeight,
         fit: BoxFit.cover,
@@ -97,4 +108,45 @@ class _ProfilePageState extends State<ProfilePage> {
               'https://cdn.pixabay.com/photo/2016/11/21/12/42/beard-1845166_1280.jpg',
         ),
       );
+}
+
+class About extends StatelessWidget {
+  const About({
+    super.key,
+    required this.aboutText,
+  });
+
+  final String? aboutText;
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      elevation: 4.0,
+      margin: const EdgeInsets.symmetric(horizontal: 16.0),
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            const Text(
+              'About',
+              style: TextStyle(
+                fontFamily: 'Roboto',
+                fontSize: 18.0,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              aboutText ?? 'Nothing to see here!',
+              style: const TextStyle(
+                fontFamily: 'Roboto',
+                fontSize: 14.0,
+              ),
+            )
+          ],
+        ),
+      ),
+    );
+  }
 }
