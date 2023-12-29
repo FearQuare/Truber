@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:truber/main.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:truber/user_provider.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -25,10 +26,19 @@ class _LoginScreenState extends State<LoginScreen> {
           .where('username', isEqualTo: username)
           .get();
       if (userDocument.docs.isNotEmpty) {
-        final data = userDocument.docs.first.data() as Map<String, dynamic>;
+        final data = userDocument.docs.first.data();
 
         // Password match check
         if (data['password'] == password) {
+          final userProvider =
+              Provider.of<UserProvider>(context, listen: false);
+          userProvider.setUserDetails(
+              data['name'] as String,
+              password,
+              data['profile_picture'] as String,
+              data['surname'] as String,
+              username);
+
           Navigator.of(context).pushReplacement(
             MaterialPageRoute(
                 builder: (context) => const MyHomePage(title: 'Truber')),
@@ -43,23 +53,6 @@ class _LoginScreenState extends State<LoginScreen> {
       print('Error: $e');
       _showErrorDialog('Something went wrong');
     }
-    // if(_usernameController.text == 'admin' && _passwordController.text == 'admin'){
-    //   Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => const MyHomePage(title: 'Truber')),
-    //   );
-    // } else {
-    //   showDialog(
-    //     context: context,
-    //     builder: (context) => AlertDialog(
-    //       title: const Text('Something is wrong'),
-    //       content: const Text('The username or password is wrong'),
-    //       actions: <Widget>[
-    //         TextButton(onPressed: (){
-    //           Navigator.of(context).pop();
-    //         }, child: const Text('close'))
-    //       ],
-    //     ),
-    //   );
-    // }
   }
 
   void _showErrorDialog(String message) {

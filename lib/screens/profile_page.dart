@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:truber/widgets/navigation_bar.dart';
-
+import 'package:provider/provider.dart';
+import 'package:truber/user_provider.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -9,7 +10,7 @@ class ProfilePage extends StatefulWidget {
   State<StatefulWidget> createState() => _ProfilePageState();
 }
 
-class _ProfilePageState extends State<ProfilePage>{
+class _ProfilePageState extends State<ProfilePage> {
   final double coverHeight = 280;
   final double profileHeight = 144;
 
@@ -23,8 +24,10 @@ class _ProfilePageState extends State<ProfilePage>{
       _selectedIndex = index;
     });
   }
+
   @override
   Widget build(BuildContext context) {
+    final userProvider = Provider.of<UserProvider>(context);
 
     return MaterialApp(
       home: Scaffold(
@@ -34,8 +37,8 @@ class _ProfilePageState extends State<ProfilePage>{
         body: ListView(
           padding: EdgeInsets.zero,
           children: <Widget>[
-            buildTop(),
-            buildContent(),
+            buildTop(userProvider),
+            buildContent(userProvider),
           ],
         ),
         bottomNavigationBar: TruberNavBar(
@@ -46,18 +49,21 @@ class _ProfilePageState extends State<ProfilePage>{
     );
   }
 
-  Widget buildContent() {
+  Widget buildContent(UserProvider userProvider) {
+    String? name = userProvider.name;
+    String? surname = userProvider.surname;
+    String fullName = "${name} ${surname}";
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
-        Text('Name Surname'),
+        Text(fullName),
       ],
     );
   }
 
-  Widget buildTop() {
+  Widget buildTop(UserProvider userProvider) {
     final bottom = profileHeight / 2;
-    final top = coverHeight - profileHeight/2;
+    final top = coverHeight - profileHeight / 2;
     return Stack(
       clipBehavior: Clip.none,
       alignment: Alignment.center,
@@ -68,7 +74,7 @@ class _ProfilePageState extends State<ProfilePage>{
         ),
         Positioned(
           top: top,
-          child: buildProfileImage(),
+          child: buildProfileImage(userProvider),
         ),
       ],
     );
@@ -81,14 +87,14 @@ class _ProfilePageState extends State<ProfilePage>{
         width: double.infinity,
         height: coverHeight,
         fit: BoxFit.cover,
-      )
-  );
+      ));
 
-  Widget buildProfileImage() => CircleAvatar(
-    radius: profileHeight / 2,
-    backgroundColor: Colors.grey.shade800,
-    backgroundImage: NetworkImage(
-      'https://cdn.pixabay.com/photo/2016/11/21/12/42/beard-1845166_1280.jpg',
-    ),
-  );
+  Widget buildProfileImage(UserProvider userProvider) => CircleAvatar(
+        radius: profileHeight / 2,
+        backgroundColor: Colors.grey.shade800,
+        backgroundImage: NetworkImage(
+          userProvider.profile_picture ??
+              'https://cdn.pixabay.com/photo/2016/11/21/12/42/beard-1845166_1280.jpg',
+        ),
+      );
 }
