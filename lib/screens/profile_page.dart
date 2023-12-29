@@ -25,22 +25,17 @@ class _ProfilePageState extends State<ProfilePage>{
   }
   @override
   Widget build(BuildContext context) {
-    final top = coverHeight - profileHeight/2;
 
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
           title: const Text('Profile Page'),
         ),
-        body: Stack(
-          clipBehavior: Clip.none,
-          alignment: Alignment.center,
-          children: [
-            buildCoverImage(),
-            Positioned(
-              top: top,
-              child: buildProfileImage(),
-            ),
+        body: ListView(
+          padding: EdgeInsets.zero,
+          children: <Widget>[
+            buildTop(),
+            buildContent(),
           ],
         ),
         bottomNavigationBar: TruberNavBar(
@@ -48,6 +43,34 @@ class _ProfilePageState extends State<ProfilePage>{
           onTabSelected: _onItemTapped,
         ),
       ),
+    );
+  }
+
+  Widget buildContent() {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        Text('Name Surname'),
+      ],
+    );
+  }
+
+  Widget buildTop() {
+    final bottom = profileHeight / 2;
+    final top = coverHeight - profileHeight/2;
+    return Stack(
+      clipBehavior: Clip.none,
+      alignment: Alignment.center,
+      children: [
+        Container(
+          margin: EdgeInsets.only(bottom: bottom),
+          child: buildCoverImage(),
+        ),
+        Positioned(
+          top: top,
+          child: buildProfileImage(),
+        ),
+      ],
     );
   }
 
