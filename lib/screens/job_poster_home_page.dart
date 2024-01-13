@@ -18,7 +18,7 @@ class _JobPosterHomePageState extends State<JobPosterHomePage> {
         context,
         MaterialPageRoute(builder: (context) => const ProfilePage()),
       );
-    } else if (index == 3) {
+    } else if (index == 2) {
       Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => const Text("canim bura nere")),

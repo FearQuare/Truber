@@ -10,6 +10,7 @@ import 'package:truber/user_provider.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
+
   @override
   State<StatefulWidget> createState() => _ProfilePageState();
 }
@@ -26,7 +27,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
     void _onItemTapped(int index) {
       if (index == 0) {
-        if (userProvider.job_poster){
+        if (userProvider.job_poster) {
           Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => const JobPosterHomePage()),
@@ -34,7 +35,8 @@ class _ProfilePageState extends State<ProfilePage> {
         } else {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => const MyHomePage(title: 'Truber')),
+            MaterialPageRoute(
+                builder: (context) => const MyHomePage(title: 'Truber')),
           );
         }
       }
@@ -49,13 +51,13 @@ class _ProfilePageState extends State<ProfilePage> {
           title: const Text('My Profile'),
           actions: <Widget>[
             IconButton(
-                onPressed: (){
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => EditProfilePage()),
-                  );
-                },
-                icon: const Icon(Icons.edit),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => EditProfilePage()),
+                );
+              },
+              icon: const Icon(Icons.edit),
             ),
           ],
         ),
@@ -117,22 +119,30 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   Widget buildCoverImage(UserProvider userProvider) => Container(
-      color: Colors.grey,
-      child: Image.network(
-        userProvider.cover_image ??
-            'https://cdn.pixabay.com/photo/2023/12/06/08/56/winter-8433264_1280.jpg',
-        width: double.infinity,
-        height: coverHeight,
-        fit: BoxFit.cover,
-      ));
+        color: Colors.grey,
+        child: userProvider.cover_image != null &&
+                userProvider.cover_image!.isNotEmpty
+            ? Image.network(
+                userProvider.cover_image!,
+                width: double.infinity,
+                height: coverHeight,
+                fit: BoxFit.cover,
+              )
+            : Image.asset(
+                'images/cover.jpg',
+                width: double.infinity,
+                height: coverHeight,
+                fit: BoxFit.cover,
+              ),
+      );
 
   Widget buildProfileImage(UserProvider userProvider) => CircleAvatar(
         radius: profileHeight / 2,
         backgroundColor: Colors.grey.shade800,
-        backgroundImage: NetworkImage(
-          userProvider.profile_picture ??
-              'https://cdn.pixabay.com/photo/2016/11/21/12/42/beard-1845166_1280.jpg',
-        ),
+        backgroundImage: userProvider.profile_picture != null &&
+                userProvider.profile_picture!.isNotEmpty
+            ? NetworkImage(userProvider.profile_picture!) as ImageProvider<Object>
+            : AssetImage('images/profile_picture.jpg') as ImageProvider<Object>,
       );
 }
 

@@ -37,7 +37,7 @@ class _TruberNavBarState extends State<TruberNavBar> {
         const NavigationDestination(
           selectedIcon: Icon(Icons.business_center),
           icon: Icon(Icons.business_center_outlined),
-          label: 'Jobs',
+          label: 'Post Jobs',
         ),
       );
     }

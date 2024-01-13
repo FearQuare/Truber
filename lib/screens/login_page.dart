@@ -103,7 +103,7 @@ class _LoginScreenState extends State<LoginScreen> {
             children: <Widget>[
               Center(
                 child: Image.asset(
-                  'C:/Users/E/Desktop/Codes/flutter_projects/Truber/images/truber-truck.jpeg',
+                  'images/truber-truck.jpeg',
                   width: 200,
                   height: 100,
                 ),

@@ -67,6 +67,8 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - C:/Users/E/Desktop/Codes/flutter_projects/Truber/images/truber-truck.jpeg
+    - C:/Users/E/Desktop/Codes/flutter_projects/Truber/images/profile_picture.jpg
+    - C:/Users/E/Desktop/Codes/flutter_projects/Truber/images/cover.jpg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
