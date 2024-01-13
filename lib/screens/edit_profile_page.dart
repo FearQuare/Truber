@@ -58,7 +58,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
                 },
                 child: Text('Save Changes'),
               ),
-              // Other update methods will be listed here
             ],
           ),
         ),

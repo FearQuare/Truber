@@ -42,7 +42,8 @@ class _LoginScreenState extends State<LoginScreen> {
             username,
             data['about'] as String,
             data['cover_image'] as String,
-          );
+            data['job_poster'] as bool,
+           );
 
           // Check if the user is a job poster and navigate to the corresponding main page
           if (data['job_poster'] == true) {
@@ -66,7 +67,6 @@ class _LoginScreenState extends State<LoginScreen> {
         _showErrorDialog('User not Found');
       }
     } catch (e) {
-      print('Error: $e');
       _showErrorDialog('Something went wrong');
     }
   }
@@ -153,14 +153,14 @@ class _LoginScreenState extends State<LoginScreen> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  Text("If you don't have an account "),
+                  const Text("If you don't have an account "),
                   TextButton(
                       onPressed: () {
                         Navigator.of(context).push(
                             MaterialPageRoute(builder: (context) => SignUpPage()),
                         );
                       },
-                      child: Text("Sign Up")),
+                      child: const Text("Sign Up")),
                 ],
               ),
             ],

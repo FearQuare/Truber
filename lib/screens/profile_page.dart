@@ -1,14 +1,15 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:truber/main.dart';
 import 'package:truber/screens/edit_profile_page.dart';
+import 'package:truber/screens/job_poster_home_page.dart';
 import 'package:truber/widgets/navigation_bar.dart';
 import 'package:provider/provider.dart';
 import 'package:truber/user_provider.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
-
   @override
   State<StatefulWidget> createState() => _ProfilePageState();
 }
@@ -19,18 +20,28 @@ class _ProfilePageState extends State<ProfilePage> {
 
   int _selectedIndex = 1;
 
-  void _onItemTapped(int index) {
-    if (index == 0) {
-      Navigator.pop(context);
-    }
-    setState(() {
-      _selectedIndex = index;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     final userProvider = Provider.of<UserProvider>(context);
+
+    void _onItemTapped(int index) {
+      if (index == 0) {
+        if (userProvider.job_poster){
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const JobPosterHomePage()),
+          );
+        } else {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const MyHomePage(title: 'Truber')),
+          );
+        }
+      }
+      setState(() {
+        _selectedIndex = index;
+      });
+    }
 
     return MaterialApp(
       home: Scaffold(
@@ -58,6 +69,7 @@ class _ProfilePageState extends State<ProfilePage> {
         bottomNavigationBar: TruberNavBar(
           selectedIndex: _selectedIndex,
           onTabSelected: _onItemTapped,
+          isJobPoster: userProvider.job_poster,
         ),
       ),
     );

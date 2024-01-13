@@ -128,6 +128,7 @@ class _MyHomePageState extends State<MyHomePage> {
       bottomNavigationBar: TruberNavBar(
         selectedIndex: _selectedIndex,
         onTabSelected: _onItemTapped,
+        isJobPoster: widget.isJobPoster,
       ),
     );
   }
