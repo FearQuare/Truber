@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:truber/main.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:truber/screens/sign_up_page.dart';
 import 'package:truber/user_provider.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -136,6 +137,19 @@ class _LoginScreenState extends State<LoginScreen> {
                   'Log in',
                   style: TextStyle(fontSize: 18.0),
                 ),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Text("If you don't have an account "),
+                  TextButton(
+                      onPressed: () {
+                        Navigator.of(context).push(
+                            MaterialPageRoute(builder: (context) => SignUpPage()),
+                        );
+                      },
+                      child: Text("Sign Up")),
+                ],
               ),
             ],
           ),

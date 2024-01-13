@@ -1,4 +1,7 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
+import 'package:truber/screens/edit_profile_page.dart';
 import 'package:truber/widgets/navigation_bar.dart';
 import 'package:provider/provider.dart';
 import 'package:truber/user_provider.dart';
@@ -33,6 +36,17 @@ class _ProfilePageState extends State<ProfilePage> {
       home: Scaffold(
         appBar: AppBar(
           title: const Text('My Profile'),
+          actions: <Widget>[
+            IconButton(
+                onPressed: (){
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => EditProfilePage()),
+                  );
+                },
+                icon: const Icon(Icons.edit),
+            ),
+          ],
         ),
         body: ListView(
           padding: EdgeInsets.zero,

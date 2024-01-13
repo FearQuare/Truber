@@ -20,4 +20,10 @@ class UserProvider with ChangeNotifier {
     this.cover_image = cover_image;
     notifyListeners();
   }
+
+  void updateAbout(String about) {
+    this.about = about;
+    notifyListeners();
+  }
+  // Other update methods will be listed here.
 }
