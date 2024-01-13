@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:truber/main.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:truber/screens/job_poster_home_page.dart';
 import 'package:truber/screens/sign_up_page.dart';
 import 'package:truber/user_provider.dart';
 
@@ -43,10 +44,21 @@ class _LoginScreenState extends State<LoginScreen> {
             data['cover_image'] as String,
           );
 
-          Navigator.of(context).pushReplacement(
-            MaterialPageRoute(
-                builder: (context) => const MyHomePage(title: 'Truber')),
-          );
+          // Check if the user is a job poster and navigate to the corresponding main page
+          if (data['job_poster'] == true) {
+            // Navigate to the job poster's main page
+            Navigator.of(context).pushReplacement(
+              MaterialPageRoute(
+                  builder: (context) => JobPosterHomePage(),
+              ),
+            );
+          } else {
+            // Navigate to the regular user's main page
+            Navigator.of(context).pushReplacement(
+              MaterialPageRoute(
+                  builder: (context) => const MyHomePage(title: 'Truber')),
+            );
+          }
         } else {
           _showErrorDialog('Incorrect Password');
         }
