@@ -36,6 +36,7 @@ class MyApp extends StatelessWidget {
 
 class MyHomePage extends StatefulWidget {
   final bool isJobPoster;
+
   const MyHomePage({super.key, required this.title, this.isJobPoster = false});
 
   final String title;
@@ -50,30 +51,38 @@ class _MyHomePageState extends State<MyHomePage> {
   List<JobPosting> jobPostings = [];
 
   Future<void> fetchJobPostings() async {
-    final querySnapshot =
-        await FirebaseFirestore.instance.collection('jobs').get();
+    try {
+      final querySnapshot = await FirebaseFirestore.instance.collection('jobs').get();
 
-    final List<JobPosting> postings = [];
-    for (final doc in querySnapshot.docs) {
-      final data = doc.data() as Map<String, dynamic>;
-      final jobPosting = JobPosting(
-        job_name: data['job_name'],
-        job_description: data['job_description'],
-        job_poster: data['job_poster'],
-        applicants: data['applicants'],
-      );
-      postings.add(jobPosting);
+      final List<JobPosting> postings = querySnapshot.docs.map((doc) {
+        try {
+          return JobPosting.fromFirestore(doc);
+        } catch (e) {
+          print('Error creating JobPosting from doc: ${doc.id}, error: $e');
+          return null; // Return null if there's an error.
+        }
+      }).where((job) => job != null).cast<JobPosting>().toList(); // Filter out any nulls.
+
+      setState(() {
+        jobPostings = postings;
+      });
+    } catch (e) {
+      print('Error fetching job postings: $e');
+      // Handle the error or show a message to the user.
     }
-    setState(() {
-      jobPostings = postings;
-    });
   }
+
 
   void _onItemTapped(int index) {
     if (index == 1) {
+      final userProvider = Provider.of<UserProvider>(context, listen: false);
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => const ProfilePage()),
+        MaterialPageRoute(
+            builder: (context) => ProfilePage(
+                  username: userProvider.username,
+                  isEditable: true,
+                )),
       );
     }
     setState(() {
@@ -89,13 +98,15 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final userProvider = Provider.of<UserProvider>(context);
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
+        automaticallyImplyLeading: false,
       ),
       body: ListView.builder(
-        itemCount:jobPostings.length,
-        itemBuilder: (context, index){
+        itemCount: jobPostings.length,
+        itemBuilder: (context, index) {
           final job = jobPostings[index];
           return Card(
             margin: const EdgeInsets.all(16),
@@ -113,10 +124,14 @@ class _MyHomePageState extends State<MyHomePage> {
                 ButtonBar(
                   children: [
                     TextButton(
-                        onPressed: () {
-                          // later we'll implement here
-                        },
-                        child: const Text('Apply'),
+                      onPressed: () {
+                        job.applyForJob(userProvider.username).then((_) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text('Applied to ${job.job_name}'))
+                          );
+                        });
+                      },
+                      child: const Text('Apply'),
                     ),
                   ],
                 ),

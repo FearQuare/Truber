@@ -26,8 +26,9 @@ class _SignUpPageState extends State<SignUpPage> {
         .get();
     final bool isJobPoster = _selectedUserType == UserType.jobPoster;
     // check if the username already exists
-    if( existingUserCheck.docs.isNotEmpty){
-      _showAlertDialog('This user already exists! Please find a distinctive username.');
+    if (existingUserCheck.docs.isNotEmpty) {
+      _showAlertDialog(
+          'This user already exists! Please find a distinctive username.');
     } else {
       await FirebaseFirestore.instance.collection('users').add({
         'username': _usernameController.text,
@@ -40,7 +41,7 @@ class _SignUpPageState extends State<SignUpPage> {
         'job_poster': isJobPoster,
       }).then((value) {
         _showSuccessDialog();
-      }).catchError((error){
+      }).catchError((error) {
         _showAlertDialog('An error occurred while signing up.');
       });
     }
@@ -48,19 +49,19 @@ class _SignUpPageState extends State<SignUpPage> {
 
   void _showAlertDialog(String message) {
     showDialog(
-        context: context,
-        builder: (context) => AlertDialog(
-          title: Text('Sign Up Error'),
-          content: Text(message),
-          actions: <Widget>[
-            TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-                child: Text('OK'),
-            ),
-          ],
-        ),
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text('Sign Up Error'),
+        content: Text(message),
+        actions: <Widget>[
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            child: Text('OK'),
+          ),
+        ],
+      ),
     );
   }
 
@@ -72,13 +73,13 @@ class _SignUpPageState extends State<SignUpPage> {
         content: Text('Successfully signed up!'),
         actions: <Widget>[
           TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-                Navigator.of(context).pushReplacement(
-                  MaterialPageRoute(builder: (context) => LoginScreen()),
-                );
-              },
-              child: Text('OK'),
+            onPressed: () {
+              Navigator.of(context).pop();
+              Navigator.of(context).pushReplacement(
+                MaterialPageRoute(builder: (context) => LoginScreen()),
+              );
+            },
+            child: Text('OK'),
           ),
         ],
       ),

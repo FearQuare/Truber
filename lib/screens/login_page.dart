@@ -43,14 +43,14 @@ class _LoginScreenState extends State<LoginScreen> {
             data['about'] as String,
             data['cover_image'] as String,
             data['job_poster'] as bool,
-           );
+          );
 
           // Check if the user is a job poster and navigate to the corresponding main page
           if (data['job_poster'] == true) {
             // Navigate to the job poster's main page
             Navigator.of(context).pushReplacement(
               MaterialPageRoute(
-                  builder: (context) => JobPosterHomePage(),
+                builder: (context) => JobPosterHomePage(),
               ),
             );
           } else {
@@ -157,7 +157,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   TextButton(
                       onPressed: () {
                         Navigator.of(context).push(
-                            MaterialPageRoute(builder: (context) => SignUpPage()),
+                          MaterialPageRoute(builder: (context) => SignUpPage()),
                         );
                       },
                       child: const Text("Sign Up")),
